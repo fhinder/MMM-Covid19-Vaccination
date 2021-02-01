@@ -11,7 +11,7 @@ The API can be used without any registration
 
 ## Installation
 
-Go to your MAcigMirror's module folder:
+Go to your MagicMirror's module folder:
 cd ~/MagicMirror/modules
 
 Clone this repository:
