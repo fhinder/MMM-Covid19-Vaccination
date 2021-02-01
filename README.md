@@ -31,7 +31,7 @@ Add the module to the modules list in  your config file:
 		states: [		
 			'Deutschland',
 			'Berlin',
-			'Baden-Würtemberg',
+			'Baden-Württemberg',
       'Nordrhein-Westfalen'
 		]
 	}
