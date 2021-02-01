@@ -9,6 +9,7 @@ https://interaktiv.morgenpost.de/data/corona/rki-vaccinations.json
  <br>
 The API can be used without any registration
 
+The total population for each state for the relative calculation is taken from: [Statistisches Bundesamt](https://www.destatis.de/DE/Themen/Gesellschaft-Umwelt/Bevoelkerung/Bevoelkerungsstand/Tabellen/bevoelkerung-nichtdeutsch-laender.html) visited on 2021-02-01.
 ## Installation
 
 Go to your MagicMirror's module folder:
@@ -43,7 +44,7 @@ Add the module to the modules list in  your config file:
 |---------------|------------|
 |reloadInterval | Reload Interval in ms <br> <b>Possible values</b>: <code>number</code> <br> <b>Default value</b>: 3600000 |
 |tableClass	| Table configuration <br> <b>Default value</b>: "small" |
-|percentage| Show vaccination numbers in percentag from type boolean <br> <b> Defaulg value </b>: true |
+|percentage| if true, vaccination progress is calculated in percentage of population. <br> <b>Possible values</b>: <code> true, false</code> <br> <b> Default value </b>: true |
 |states	| Array of states in Germany to be displayed. If the array is empty, all states will be shown.  <br> <b>Possible values</b>: <code>array of string</code> <br> <b>Default value</b>: ["Deutschland", "Berlin", "Baden-Würtemberg", "Nordrhein-Westfalen"] |
 
 
