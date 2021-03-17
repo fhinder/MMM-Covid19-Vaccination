@@ -65,7 +65,7 @@ Module.register("MMM-Covid19-Vaccination", {
 		var table = document.createElement("table");
 		table.className = this.config.tableClass;
 
-		var data = ['Land', 'Erste Impfung', 'Impfungen letzte 7 Tage', 'Zweite Impfung'];
+		var data = ['Land', 'Mind. Erstgeimpft', 'Impfungen letzte 7 Tage', 'Vollständig Geimpfte'];
 			
 		var thead = table.createTHead();
 		var row = thead.insertRow();
@@ -89,13 +89,13 @@ Module.register("MMM-Covid19-Vaccination", {
 			
 			var sumLatest = document.createElement("td");
 			sumLatest.className = "sumLatest";
-			this.config.percentage ? value = Math.round(d.cumsum_latest / this.dataPopulation[d.name] * 10000) / 100 +"%" : value = d.cumsum_latest;
+			this.config.percentage ? value = Math.round((d.cumsum_latest - d.cumsum2_latest) / this.dataPopulation[d.name] * 10000) / 100 + "%" : value = (d.cumsum_latest - d.cumsum2_latest);
 			sumLatest.innerHTML = value;
 			row.appendChild(sumLatest);
 
 			var sum_7days = document.createElement("td");
 			sum_7days.className = "sum_7days";
-			this.config.percentage ? value = Math.round(d.cumsum_7_days_ago / this.dataPopulation[d.name] * 10000) / 100 + "%" : value = d.cumsum_7_days_ago;
+			this.config.percentage ? value = Math.round((d.cumsum_latest - d.cumsum_7_days_ago) / this.dataPopulation[d.name] * 10000) / 100 + "%" : value = (d.cumsum_7_days_ago - d.cumsum_latest);
 			sum_7days.innerHTML = value;
 			row.appendChild(sum_7days);
 
