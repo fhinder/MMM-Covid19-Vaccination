@@ -4,7 +4,7 @@ A [MagicMirror²](https://magicmirror.builders) module for Covid19 Vaccination D
 ![Example](screenshot.jpg)
 
 ## Dependencies
-This module depends on the following source: ["Berliner Borgenpost"](https://www.morgenpost.de/)<br>
+This module depends on the following source: ["Berliner Morgenpost"](https://www.morgenpost.de/)<br>
 https://interaktiv.morgenpost.de/data/corona/rki-vaccinations.json
  <br>
 The API can be used without any registration
