@@ -34,13 +34,13 @@ Add the module to the modules list in  your config file:
 	config:{
 		reloadInterval: 60*60*1000,
 		tableClass: "small",
-    percentage: true,
-    dataSource: "BMG"
+    		percentage: true,
+    		dataSource: "BMG"
 		states: [		
 			'Deutschland',
 			'Berlin',
 			'Baden-Württemberg',
-     	'Nordrhein-Westfalen'
+     			'Nordrhein-Westfalen'
 		]
 	}
 },
