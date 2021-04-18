@@ -2,8 +2,10 @@
  * Module: MMM-Covid19-Vaccination
  *
  * By Fabian Hinder
- * Data based on Berliner Morgenpost:
+ * Data based on Berliner Morgenpost or Bundesministerium für Gesundheit:
  * https://interaktiv.morgenpost.de/data/corona/rki-vaccinations.json
+ * https://impfdashboard.de/daten
+ * 
 */
 
 Module.register("MMM-Covid19-Vaccination", {
@@ -12,11 +14,12 @@ Module.register("MMM-Covid19-Vaccination", {
 		reloadInterval: 60*60*1000, //once per hour
 		tableClass: "small",
 		percentage: true,
+		dataSource: "BMG",
 		states: [
 			"Deutschland",
-			"Berlin",
 			"Baden-Würtemberg",
-			"Nordrhein-Westfalen"
+			"Nordrhein-Westfalen",
+			"Berlin"
 		]
 	},
 	
@@ -37,13 +40,32 @@ Module.register("MMM-Covid19-Vaccination", {
 			"Niedersachsen": 7993608,
 			"Nordrhein-Westfalen": 17947221,
 			"Rheinland-Pfalz": 4093903,
-			"Saarland":	986887,
+			"Saarland": 986887,
 			"Sachsen": 4071971,
 			"Sachsen-Anhalt": 2194782,
 			"Schleswig-Holstein": 2903773,
 			"Thüringen": 2133378,
 			"Deutschland": 83166711
-		}
+		};
+		this.stateMapping = {
+			"Baden-Württemberg": "DE-BW",
+			"Bayern": "DE-BY",
+			"Berlin": "DE-BE",
+			"Brandenburg": "DE_BB",
+			"Bremen": "DE-HB",
+			"Hamburg": "DE-HH",
+			"Hessen": "DE-HE",
+			"Mecklenburg-Vorpommern": "DE-MV",
+			"Niedersachsen": "DE-NI",
+			"Nordrhein-Westfalen": "DE-NW",
+			"Rheinland-Pfalz": "DE-RP",
+			"Saarland": "DE-SL",
+			"Sachsen": "DE-SN",
+			"Sachsen-Anhalt": "DE-ST",
+			"Schleswig-Holstein": "DE-SH",
+			"Thüringen": "DE-TH",
+			"Deutschland": "DE"
+		};
 	},
 	
 	// Override dom generator.
@@ -65,7 +87,8 @@ Module.register("MMM-Covid19-Vaccination", {
 		var table = document.createElement("table");
 		table.className = this.config.tableClass;
 
-		var data = ['Land', 'Mind. Erstgeimpft', 'Impfungen letzte 7 Tage', 'Vollständig Geimpfte'];
+		if (this.config.dataSource == "Morgenpost") var data = ['Land', 'Mind. Erstgeimpft', 'Impfungen letzte 7 Tage', 'Vollständig Geimpfte'];
+		if (this.config.dataSource == "BMG") var data = ['Land', 'Mind. Erstgeimpft', 'Vollständig Geimpfte'];
 			
 		var thead = table.createTHead();
 		var row = thead.insertRow();
@@ -90,18 +113,23 @@ Module.register("MMM-Covid19-Vaccination", {
 			var sumLatest = document.createElement("td");
 			sumLatest.className = "sumLatest";
 			this.config.percentage ? value = Math.round((d.cumsum_latest - d.cumsum2_latest) / this.dataPopulation[d.name] * 10000) / 100 + "%" : value = (d.cumsum_latest - d.cumsum2_latest);
+			this.config.percentage ? value = Math.round((d.peopleFirstTotal) / this.dataPopulation[d.name] * 10000) / 100 + "%" : value = (d.peopleFirstTotal);
 			sumLatest.innerHTML = value;
 			row.appendChild(sumLatest);
 
-			var sum_7days = document.createElement("td");
-			sum_7days.className = "sum_7days";
-			this.config.percentage ? value = Math.round((d.cumsum_latest - d.cumsum_7_days_ago) / this.dataPopulation[d.name] * 10000) / 100 + "%" : value = (d.cumsum_7_days_ago - d.cumsum_latest);
-			sum_7days.innerHTML = value;
-			row.appendChild(sum_7days);
+			if (this.config.dataSource == "Morgenpost") {
+				var sum_7days = document.createElement("td");
+				sum_7days.className = "sum_7days";
+				this.config.percentage ? value = Math.round((d.cumsum_latest - d.cumsum_7_days_ago) / this.dataPopulation[d.name] * 10000) / 100 + "%" : value = (d.cumsum_7_days_ago - d.cumsum_latest);
+				sum_7days.innerHTML = value;
+				row.appendChild(sum_7days);
+			}
 
 			var sum2Latest = document.createElement("td");
-			sum2Latest.className = "sumLatest";
-			this.config.percentage ? value = Math.round(d.cumsum2_latest / this.dataPopulation[d.name] * 10000) / 100  +"%": value = d.cumsum2_latest;
+			sum2Latest.className = "sum2Latest";
+			this.config.percentage ? value = Math.round(d.cumsum2_latest / this.dataPopulation[d.name] * 10000) / 100 + "%" : value = d.cumsum2_latest;
+			this.config.percentage ? value = Math.round(d.peopleFullTotal / this.dataPopulation[d.name] * 10000) / 100 + "%" : value = d.peopleFullTotal;
+			
 			sum2Latest.innerHTML = value;
 			row.appendChild(sum2Latest);
 			
@@ -124,7 +152,8 @@ Module.register("MMM-Covid19-Vaccination", {
 				this.sendSocketNotification("GET_VACC_DATA", 
 					{
 						"config": this.config,
-						"identifier": this.identifier
+						"identifier": this.identifier,
+						"stateMapping": this.stateMapping
 					}
 				)
 				//Start timer for update
@@ -132,7 +161,8 @@ Module.register("MMM-Covid19-Vaccination", {
 					this.sendSocketNotification("GET_VACC_DATA", 
 						{
 							"config": this.config,
-							"identifier": this.identifier
+							"identifier": this.identifier,
+							"stateMapping": this.stateMapping
 						}
 					)
 				}, this.config.reloadInterval);
