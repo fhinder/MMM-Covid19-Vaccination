@@ -10,7 +10,7 @@ Using the data from "BMI, RKI":
 ## Dependencies
 This module reads data from one of the following sources. The source can be configured in the config file. 
 
-["Berliner Morgenpost"](https://www.morgenpost.de/)<br>https://interaktiv.morgenpost.de/data/corona/rki-vaccinations.json<br>
+["Berliner Morgenpost"](https://www.morgenpost.de/), https://interaktiv.morgenpost.de/data/corona/rki-vaccinations.json<br>
 ["Impfdashboard.de, BMG, RKI"](https://impfdashboard.de/)
 
 The API can be used without any registration.
